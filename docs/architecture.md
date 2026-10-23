@@ -1,8 +1,8 @@
-# Notia design decisions
+# Architecture
 
-## A focused first release
+## A focused library
 
-Notia's identity comes from its restrained ripple animation, consistent typography, and predictable behavior. The first release includes a complete toast library and a working documentation playground. Development diagnostics are deferred because intercepting application globals, redacting arbitrary data, and proving production exclusion deserve their own release and validation.
+Notia's identity comes from its restrained ripple animation, consistent typography, and predictable behavior. The library focuses on notification behavior, with an interactive website demonstrating the public API.
 
 ## State outside React
 
@@ -26,4 +26,4 @@ React and ReactDOM remain peers. There are no additional runtime dependencies, a
 
 ## Documentation as a real consumer
 
-The documentation app imports the built library rather than aliases to source files. A second check installs the tarball into isolated consumers. The docs use plain CSS so the project does not need an extra styling tool merely to render its own examples. The playground is the initial workshop; Storybook and a task orchestrator can be added if their value becomes concrete.
+The documentation app imports the built library rather than aliases to source files. A second check installs the tarball into isolated consumers. The docs use plain CSS so the project does not need an extra styling tool merely to render its own examples.

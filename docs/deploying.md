@@ -24,7 +24,7 @@ The build runs from the workspace root, compiling the local Notia library before
 
 Commit and push the deployment configuration and this guide. Save the Vercel settings, then deploy the new commit. Do not redeploy an older commit that lacks the configuration.
 
-The log should detect Next.js 16.4.2, build `notia@0.1.1`, and then build `@notia/docs`. Once deployed, check `/`, `/playground`, `/docs`, and direct loading of `/docs/api`.
+The log should detect Next.js, build the local `notia` package, and then build `@notia/docs`. Once deployed, check `/`, `/playground`, `/docs`, and direct loading of `/docs/api`.
 
 Deploying this website does not publish or change any npm package. A successful local build does not establish that a hosted Vercel deployment succeeded.
 

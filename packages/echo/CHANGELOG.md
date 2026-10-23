@@ -1,6 +1,6 @@
 # notia
 
-## 0.1.1 — prepared for publication
+## 0.1.1 — 23 October 2026
 
 - Move the package from `@sravan_saiba/echo` to the unscoped name `notia`.
 - Update installation instructions, imports, workspace links, and packed-package compatibility checks for the new name.
@@ -8,7 +8,7 @@
 - Split the website into focused home, playground, and documentation routes.
 - Guard playground input until hydration completes and cover delayed loading in the browser tests.
 
-`notia@0.1.1` is a new npm package identity, not a rename of an existing registry entry. Publication of the new name is pending.
+Published on npm as `notia@0.1.1`.
 
 ## 0.1.0 — published as @sravan_saiba/echo on 23 October 2026
 

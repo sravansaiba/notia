@@ -1,16 +1,14 @@
 # Notia
 
-**Toasts that talk back.** Expressive, accessible notifications for React and Next.js, with a subtle echo animation and no additional runtime dependencies.
+**Toasts that talk back.** Expressive, accessible notifications for React and Next.js, with subtle layered animations and no additional runtime dependencies.
 
-> v0.1.1: Notia is moving from `@sravan_saiba/echo` to the shorter, unscoped name `notia`. The new installation command works once this package is published.
+Available on npm as [`notia`](https://www.npmjs.com/package/notia).
 
 ## Install
 
 ```sh
 npm install notia
 ```
-
-If you installed the original package, run `npm uninstall @sravan_saiba/echo` and then install `notia`. Replace JavaScript imports with `'notia'` and stylesheet imports with `'notia/styles.css'`. Use `notia` and `Toaster` for new integrations. The exported `echo` API remains as a compatibility alias of `notia`; existing CSS tokens and classes retain their `echo` prefix.
 
 React and ReactDOM are peer dependencies. Notia supports React 18.3 and React 19; the repository's compatibility checks install and test both major versions from the package tarball.
 
@@ -136,40 +134,35 @@ export default function RootLayout({ children }: { children: ReactNode }) {
 }
 ```
 
-Call `echo` from files with `'use client'` or their client-side dependencies, not Server Components, server actions, SSR render functions, or module initialization.
+Call `notia` from files with `'use client'` or their client-side dependencies, not Server Components, server actions, SSR render functions, or module initialization.
 
 In the Pages Router, import the stylesheet and render `<Toaster />` in `pages/_app.tsx`.
 
 ## Styling
 
-No Tailwind configuration or animation library is required. Set a class on your Toaster and override CSS variables:
+Import `notia/styles.css` once. Choose `light`, `dark`, or `system` with the Toaster's `theme` prop. No styling framework or animation library is required.
 
 ```tsx
-<Toaster className="my-toaster" theme="dark" />
+<Toaster theme="system" style={{ fontFamily: 'inherit', zIndex: 10000 }} />
 ```
 
+Add a class to customize individual notifications:
+
+```tsx
+notia.success('Made it yours.', { className: 'product-toast' });
+```
+
+Load your overrides after the Notia stylesheet. Repeating the class supplies enough specificity for every notification type:
+
 ```css
-.my-toaster {
-  --echo-radius: 16px;
-  --echo-width: 380px;
-  --echo-gap: 12px;
-  --echo-offset: 24px;
+.product-toast.product-toast {
+  border-radius: 18px;
+  border-color: #9470d8;
+  box-shadow: 0 8px 28px #25123b18;
 }
 ```
 
-Color tokens: `--echo-bg`, `--echo-text`, `--echo-muted`, `--echo-border`, `--echo-success`, `--echo-error`, `--echo-info`, `--echo-warning`. Shadow: `--echo-shadow`.
-
-To disable animations explicitly:
-
-```css
-.echo-toast,
-.echo-toast::before,
-.echo-icon--loading {
-  animation: none;
-}
-```
-
-Animations are automatically disabled when `prefers-reduced-motion: reduce` is active.
+Check text contrast when changing colors. Animations are automatically disabled when `prefers-reduced-motion: reduce` is active.
 
 ## Accessibility
 
@@ -184,7 +177,7 @@ Automated accessibility checks cannot replace testing with assistive technology 
 
 ## Scope
 
-v0.1 focuses on the toast experience. No error interception, request inspection, analytics, network requests, or diagnostic collection is included. Optional development diagnostics are planned separately.
+Notia focuses on toast notifications. It does not intercept errors, inspect requests, collect analytics, or make network requests.
 
 ## License
 
