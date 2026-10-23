@@ -772,18 +772,6 @@ code {
   padding: 2px 4px;
   border-radius: 3px;
 }
-.release-notice {
-  display: flex;
-  gap: 10px;
-  font-size: 11px;
-  line-height: 1.7;
-  color: #7b5b29;
-  background: #f5efdf;
-  border: 1px solid #e6dcc1;
-  padding: 12px;
-  border-radius: 7px;
-  margin: 20px 0;
-}
 .docs-tip {
   border-left: 2px solid #c8b7df;
   padding-left: 14px;

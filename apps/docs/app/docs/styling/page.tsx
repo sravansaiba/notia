@@ -6,20 +6,36 @@ export default function DocPage() {
     <>
       <h1 className="doc-title">Your product. Your personality.</h1>
       <p>
-        Notia ships with its own CSS. Override variables using a class on your
-        Toaster; no Tailwind or animation library needed.
+        Import the stylesheet once, choose a theme, and add your own classes
+        where you need them. No styling framework required.
       </p>
       <Code
-        label="CSS variables"
-        text={`.my-toaster {\n  --echo-bg: #22232b;\n  --echo-text: #f5f5f8;\n  --echo-muted: #b5b6c3;\n  --echo-border: #41424e;\n  --echo-info: #b5aeff;\n  --echo-radius: 16px;\n  --echo-width: 380px;\n  --echo-gap: 12px;\n  --echo-offset: 24px;\n}`}
+        label="1. Set your theme"
+        text={`import { Toaster } from 'notia';\nimport 'notia/styles.css';\n\n<Toaster theme="system" position="bottom-right" />`}
       />
       <p>
-        Other tokens: <code>--echo-success</code>, <code>--echo-error</code>,{' '}
-        <code>--echo-warning</code>, and <code>--echo-shadow</code>. Set{' '}
-        <code>animation: none</code> on <code>.echo-toast</code> and{' '}
-        <code>.echo-toast::before</code> to disable the entry effect. Set it on{' '}
-        <code>.echo-icon--loading</code> as well to stop the spinner.
+        Choose <code>light</code>, <code>dark</code>, or <code>system</code>.
+        System follows the user's color preference. All themes respect
+        reduced-motion settings automatically.
       </p>
+      <h2>Make a toast your own</h2>
+      <Code
+        label="2. Add a class to a notification"
+        text={`import { notia } from 'notia';\n\nnotia.success('Made it yours.', {\n  description: 'A small detail. A familiar feeling.',\n  className: 'product-toast',\n});`}
+      />
+      <Code
+        label="3. Style your class"
+        text={`/* Load after the Notia stylesheet. */\n.product-toast.product-toast {\n  border-radius: 18px;\n  border-color: #9470d8;\n  box-shadow: 0 8px 28px #25123b18;\n}`}
+      />
+      <p>
+        Repeating the class gives your overrides enough specificity for every
+        notification type. Check text contrast when changing colors.
+      </p>
+      <h2>Style the notification region</h2>
+      <Code
+        label="Toaster styles"
+        text={`<Toaster\n  theme="system"\n  className="product-notifications"\n  style={{ fontFamily: 'inherit', zIndex: 10000 }}\n/>`}
+      />
     </>
   );
 }

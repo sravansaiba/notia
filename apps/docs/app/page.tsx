@@ -11,7 +11,7 @@ export default function Home() {
         <div className="hero-copy">
           <Link className="eyebrow-badge" href="/docs/releases">
             <span className="status-dot" /> INTRODUCING NOTIA{' '}
-            <span className="badge-divider">/</span> v0.1.1 preview <Arrow />
+            <span className="badge-divider">/</span> v0.1.1 <Arrow />
           </Link>
           <h1>
             A little feedback.

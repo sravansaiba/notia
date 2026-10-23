@@ -7,12 +7,7 @@ export default function DocPage() {
       <p className="kicker">HELLO, NOTIA.</p>
       <h1 className="doc-title">Up and toasting.</h1>
       <p>Add a Toaster once. Call Notia wherever your client code lives.</p>
-      <div className="release-notice">
-        <span aria-hidden="true">◉</span> Notia 0.1.1 is being prepared under
-        the new package name. Install it after publication. The original package
-        was published as @sravan_saiba/echo.
-      </div>
-      <Code text="npm install notia" label="1. Install · after publication" />
+      <Code text="npm install notia" label="1. Install" />
       <Code
         label="2. Mount once · app/layout.tsx"
         text={`import type { ReactNode } from 'react';\nimport { Toaster } from 'notia';\nimport 'notia/styles.css';\n\nexport default function Layout({ children }: { children: ReactNode }) {\n  return (\n    <html lang="en">\n      <body>\n        {children}\n        <Toaster position="bottom-right" theme="system" />\n      </body>\n    </html>\n  );\n}`}
@@ -27,18 +22,6 @@ export default function DocPage() {
         <code>pages/_app.tsx</code>. Toast calls work in browser utilities too;
         server-side calls are inert.
       </p>
-      <h2>Moving from Echo?</h2>
-      <p>
-        Install <code>notia</code> and update your import paths. The primary API
-        is now <code>notia</code>; <code>echo</code> remains a compatibility
-        alias. Existing CSS variables keep their <code>--echo-</code> prefix.
-      </p>
-      <Code
-        label="Migration"
-        text={['npm uninstall @sravan_saiba/echo', 'npm install notia'].join(
-          String.fromCharCode(10),
-        )}
-      />
     </>
   );
 }

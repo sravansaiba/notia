@@ -27,7 +27,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <Brand small />
             </Link>
             <p>Small notifications. Clear feedback.</p>
-            <Link href="/docs">Built for your next idea ↗</Link>
+            <a href="https://www.npmjs.com/package/notia">View on npm ↗</a>
           </footer>
         </Providers>
       </body>
