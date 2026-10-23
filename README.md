@@ -10,6 +10,7 @@ Package prepared: `notia@0.1.1`. The original `@sravan_saiba/echo@0.1.0` is publ
 - [Product plan](ECHO_PLAN.md)
 - [Release checklist](RELEASE.md)
 - [Publish Notia yourself](PUBLISHING.md)
+- [Deploy the website to Vercel](DEPLOYING.md)
 - [Verification results](VERIFICATION.md)
 - [Design decisions](DESIGN.md)
 
