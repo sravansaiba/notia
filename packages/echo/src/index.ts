@@ -21,6 +21,9 @@ export const notia = {
   info: create('info'),
   warning: create('warning'),
   loading: create('loading'),
+  /** Persistent until explicitly completed with update({ type: 'success' }). */
+  progress: (message: ReactNode, options: ToastOptions = {}) =>
+    create('loading')(message, { ...options, progress: options.progress ?? 0 }),
   update: (id: string, options: ToastUpdate) => {
     if (browser()) store.update(id, options);
   },
@@ -73,4 +76,7 @@ export type {
   Theme,
   ToasterProps,
   PromiseMessages,
+  ToastAction,
+  ToastIcons,
+  ToasterLabels,
 } from './types';

@@ -1,5 +1,11 @@
 # notia
 
+## 0.2.0
+
+### Minor Changes
+
+- Add async action and cancel buttons with retryable error handling, persistent progress notifications, per-toast and per-type custom icons, optional expandable stacks with paused hidden timers, and RTL support with translatable control labels. Preserve existing notification APIs and styling compatibility. Refresh compact actions, status accents, and progress motion. Keep action focus through exit so keyboard focus can return to its trigger.
+
 ## 0.1.1 — 23 October 2026
 
 - Move the package from `@sravan_saiba/echo` to the unscoped name `notia`.

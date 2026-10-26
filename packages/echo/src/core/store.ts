@@ -21,6 +21,7 @@ export function createStore() {
   let config = { ...defaults };
   let host = false;
   let sequence = 0;
+  let instance = 0;
   const listeners = new Set<() => void>();
   const clocks = new Map<string, Clock>();
   const exits = new Map<string, ReturnType<typeof setTimeout>>();
@@ -142,7 +143,15 @@ export function createStore() {
         snapshot = snapshot.filter((toast) => toast.id !== queued[0]?.id);
       snapshot = [
         ...snapshot,
-        { ...options, id, type, message, state: 'queued', revision: 0 },
+        {
+          ...options,
+          id,
+          type,
+          message,
+          state: 'queued',
+          revision: 0,
+          instance: ++instance,
+        },
       ];
       promote();
       emit();
@@ -182,7 +191,7 @@ export function createStore() {
     },
     attach(options: Partial<Config> = {}) {
       if (host)
-        throw new Error('Echo supports one mounted Toaster per application.');
+        throw new Error('Notia supports one mounted Toaster per application.');
       config = {
         maxVisible: positive(
           options.maxVisible ?? defaults.maxVisible,

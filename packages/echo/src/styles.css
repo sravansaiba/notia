@@ -7,7 +7,7 @@
   --echo-error: #c52c3a;
   --echo-info: #4d4ac8;
   --echo-warning: #956000;
-  --echo-radius: 14px;
+  --echo-radius: 12px;
   --echo-width: 360px;
   --echo-gap: 10px;
   --echo-offset: 24px;
@@ -77,11 +77,11 @@
 .echo-toast {
   box-sizing: border-box;
   display: flex;
-  gap: 12px;
-  align-items: flex-start;
+  gap: 10px;
+  align-items: center;
   position: relative;
   isolation: isolate;
-  padding: 16px;
+  padding: 14px 15px;
   background: var(--echo-bg);
   border: 1px solid var(--echo-border);
   border-radius: var(--echo-radius);
@@ -149,7 +149,8 @@
   flex: 0 0 28px;
   width: 28px;
   height: 28px;
-  margin: -2px -4px -2px 0;
+  margin-block: -2px;
+  margin-inline: 0 -4px;
   border: 0;
   border-radius: 6px;
   background: transparent;
@@ -196,7 +197,7 @@
 @keyframes echo-leave {
   to {
     opacity: 0;
-    transform: translateX(16px) scale(0.97);
+    transform: translateX(var(--echo-exit-x, 16px)) scale(0.97);
   }
 }
 @keyframes echo-spin {
@@ -217,5 +218,193 @@
 @media (max-width: 480px) {
   .echo-root {
     --echo-offset: 16px;
+  }
+}
+
+.echo-toast[hidden] {
+  display: none;
+}
+.echo-root:dir(rtl) {
+  --echo-exit-x: -16px;
+}
+.echo-content {
+  text-align: start;
+}
+.echo-icon-wrap > svg {
+  max-width: 100%;
+  max-height: 100%;
+}
+.echo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 9px;
+}
+.echo-action,
+.echo-expand {
+  appearance: none;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--echo-border);
+  border-radius: 7px;
+  padding: 5px 9px;
+  cursor: pointer;
+  color: var(--echo-text);
+  background: var(--echo-bg);
+  pointer-events: auto;
+  overflow-wrap: anywhere;
+  max-width: 100%;
+}
+.echo-action[data-variant='action'] {
+  background: color-mix(in srgb, var(--echo-info) 10%, var(--echo-bg));
+  border-color: color-mix(in srgb, var(--echo-info) 24%, var(--echo-border));
+  color: var(--echo-info);
+}
+.echo-action:disabled,
+.echo-action[aria-disabled='true'] {
+  cursor: wait;
+  opacity: 0.7;
+}
+.echo-action:focus-visible,
+.echo-expand:focus-visible {
+  outline: 2px solid var(--echo-info);
+  outline-offset: 2px;
+}
+.echo-action[data-pending='true']::after {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid currentColor;
+  border-inline-end-color: transparent;
+  border-radius: 50%;
+  margin-inline-start: 7px;
+  animation: echo-spin 900ms linear infinite;
+}
+.echo-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+.echo-progress-track {
+  flex: 1;
+  height: 5px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--echo-border);
+}
+.echo-progress-track > span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--echo-info);
+  transform-origin: left;
+  transition: transform 150ms ease;
+}
+.echo-root:dir(rtl) .echo-progress-track > span {
+  transform-origin: right;
+}
+.echo-progress-value {
+  font-size: 11px;
+  color: var(--echo-muted);
+  font-variant-numeric: tabular-nums;
+}
+.echo-root[data-collapsed='true'] .echo-toast:not([hidden]) {
+  box-shadow:
+    var(--echo-shadow),
+    0 7px 0 -2px var(--echo-bg),
+    0 7px 0 -1px var(--echo-border),
+    0 14px 0 -4px var(--echo-bg),
+    0 14px 0 -3px var(--echo-border);
+}
+.echo-root[data-position^='bottom'][data-collapsed='true']
+  .echo-toast:not([hidden]) {
+  box-shadow:
+    var(--echo-shadow),
+    0 -7px 0 -2px var(--echo-bg),
+    0 -7px 0 -1px var(--echo-border),
+    0 -14px 0 -4px var(--echo-bg),
+    0 -14px 0 -3px var(--echo-border);
+}
+.echo-expand {
+  display: block;
+  margin: 18px auto 0;
+  box-shadow: var(--echo-shadow);
+}
+@media (prefers-reduced-motion: reduce) {
+  .echo-progress-track > span {
+    transition: none;
+  }
+  .echo-action[data-pending='true']::after {
+    animation: none;
+  }
+}
+
+/* Compact single-line actions share the message row; detailed cards retain a second row. */
+.echo-toast {
+  --echo-accent: var(--echo-info);
+}
+.echo-toast[data-type='success'] {
+  --echo-accent: var(--echo-success);
+}
+.echo-toast[data-type='error'] {
+  --echo-accent: var(--echo-error);
+}
+.echo-toast[data-type='warning'] {
+  --echo-accent: var(--echo-warning);
+}
+
+.echo-content:not(:has(.echo-description, .echo-progress)) {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  padding-top: 0;
+}
+.echo-content:not(:has(.echo-description, .echo-progress)) .echo-message {
+  flex: 1 1 120px;
+}
+.echo-content:not(:has(.echo-description, .echo-progress)) .echo-actions {
+  margin-top: 0;
+}
+.echo-action {
+  min-height: 30px;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease;
+}
+.echo-action:hover {
+  border-color: var(--echo-accent);
+}
+.echo-progress-track {
+  height: 4px;
+}
+.echo-progress-track > span {
+  background: var(--echo-accent);
+  transition: transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.echo-toast {
+  transition: box-shadow 220ms ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .echo-toast,
+  .echo-action,
+  .echo-progress-track > span {
+    transition: none;
+  }
+}
+
+.echo-list {
+  transition: gap 180ms ease;
+}
+.echo-root[data-collapsed='true'] .echo-list {
+  gap: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .echo-list {
+    transition: none;
   }
 }
