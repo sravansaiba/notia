@@ -5,6 +5,7 @@ import './globals.css';
 import Link from 'next/link';
 import { Header } from './components/header';
 import { Brand } from './components/brand';
+import { SiteMain } from './components/site-main';
 import { Providers } from './components/providers';
 
 export const metadata: Metadata = {
@@ -14,14 +15,21 @@ export const metadata: Metadata = {
 };
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){var t='light';try{if(localStorage.getItem('notia-theme')==='dark')t='dark'}catch(e){}document.documentElement.dataset.theme=t})()`,
+          }}
+        />
+      </head>
       <body>
         <Providers>
           <a className="skip-link" href="#main">
             Skip to content
           </a>
           <Header />
-          <main id="main">{children}</main>
+          <SiteMain>{children}</SiteMain>
           <footer className="site-footer section-width">
             <Link href="/" aria-label="Notia home">
               <Brand small />

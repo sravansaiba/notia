@@ -4,14 +4,12 @@ import { notia, type Position, type Theme, type ToastType } from 'notia';
 import { Code } from './code';
 import { useClientReady } from './ready';
 import { usePlaygroundSettings } from './providers';
+import { LiveExample } from './live-example';
+import { exampleSources } from '../lib/example-sources';
+import type { ExampleName } from '../lib/guides';
 function Arrow() {
   return <span aria-hidden="true">↗</span>;
 }
-const snippets = {
-  basic: `import { notia } from 'notia';\n\n// A little feedback goes a long way.\nnotia.success('Your work, saved.', {\n  description: 'One less thing to think about.',\n});`,
-  promise: `const result = await notia.promise(saveWork(), {\n  loading: 'Making it happen…',\n  success: 'Your work, saved.',\n  error: 'Something went wrong. Try again.',\n});`,
-  custom: `notia.success('Made it your own.', {\n  description: 'Your product. Your personality.',\n  className: 'my-toast',\n  duration: 5000,\n});`,
-};
 const positions: Position[] = [
   'top-left',
   'top-center',
@@ -43,14 +41,27 @@ const examples: Record<ToastType, { message: string; description: string }> = {
   },
 };
 
-export function Playground() {
+function MessagePlayground() {
   const { position, setPosition, theme, setTheme, duration, setDuration } =
     usePlaygroundSettings();
   const ready = useClientReady();
-  const [tab, setTab] = useState<keyof typeof snippets>('basic');
+  const [tab, setTab] = useState<'basic' | 'promise'>('basic');
   const [type, setType] = useState<ToastType>('success');
   const [promiseFails, setPromiseFails] = useState(false);
   const [message, setMessage] = useState('');
+  const generatedCode = `'use client';
+import { notia, Toaster } from 'notia';
+import 'notia/styles.css';
+
+export default function App() {
+  return <>
+    <button onClick={() => notia.${type}(${JSON.stringify(message.trim() || examples[type].message)}, {
+      description: ${JSON.stringify(examples[type].description)},
+      duration: ${duration},${type === 'loading' ? "\n      id: 'playground-loading'," : ''}
+    })}>Show notification</button>
+    <Toaster position="${position}" theme="${theme}" duration={${duration}} />
+  </>;
+}`;
   const show = (kind: ToastType = type) =>
     notia[kind](message.trim() || examples[kind].message, {
       description: examples[kind].description,
@@ -82,20 +93,7 @@ export function Playground() {
   }
 
   return (
-    <section
-      id="playground"
-      className="playground-section playground-page section-width"
-    >
-      <div className="section-heading">
-        <div>
-          <p className="kicker">LESS CONFIG. MORE CHARACTER.</p>
-          <h1 className="page-title">Good feedback is a feeling.</h1>
-          <p>Click around. Make some noise. Find your Notia.</p>
-        </div>
-        <span className="section-note">
-          <span className="status-dot" /> Live playground
-        </span>
-      </div>
+    <section id="playground" className="message-playground">
       <div className="playground">
         <div className="playground-controls">
           <div className="panel-heading">
@@ -202,7 +200,7 @@ export function Playground() {
             <h2>A few lines. That’s all.</h2>
           </div>
           <div className="code-tabs" role="tablist" aria-label="Code examples">
-            {(['basic', 'promise', 'custom'] as const).map((key) => (
+            {(['basic', 'promise'] as const).map((key) => (
               <button
                 id={`tab-${key}`}
                 key={key}
@@ -212,22 +210,22 @@ export function Playground() {
                 tabIndex={tab === key ? 0 : -1}
                 onClick={() => setTab(key)}
                 onKeyDown={(event) => {
-                  const keys = ['basic', 'promise', 'custom'] as const;
+                  const keys = ['basic', 'promise'] as const;
                   const index = keys.indexOf(key);
                   if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
                     event.preventDefault();
                     const next =
-                      keys[(index + (event.key === 'ArrowRight' ? 1 : 2)) % 3]!;
+                      keys[
+                        (index +
+                          (event.key === 'ArrowRight' ? 1 : keys.length - 1)) %
+                          keys.length
+                      ]!;
                     setTab(next);
                     document.getElementById(`tab-${next}`)?.focus();
                   }
                 }}
               >
-                {key === 'basic'
-                  ? 'The basics'
-                  : key === 'promise'
-                    ? 'Promises'
-                    : 'Custom styling'}
+                {key === 'basic' ? 'The basics' : 'Promises'}
               </button>
             ))}
           </div>
@@ -236,7 +234,19 @@ export function Playground() {
             id="example-panel"
             aria-labelledby={`tab-${tab}`}
           >
-            <Code text={snippets[tab]} />
+            <Code
+              text={
+                tab === 'basic'
+                  ? generatedCode
+                  : exampleSources.promises.typescript
+              }
+              javascript={
+                tab === 'promise'
+                  ? exampleSources.promises.javascript
+                  : generatedCode
+              }
+              label="App.tsx"
+            />
           </div>
           <div className="code-bottom-note">
             <span aria-hidden="true">✧</span> A familiar API. A fresh
@@ -264,6 +274,79 @@ export function Playground() {
           Try a promise <Arrow />
         </button>
       </div>
+    </section>
+  );
+}
+
+const categories = [
+  ['messages', 'Messages'],
+  ['actions', 'Actions'],
+  ['progress', 'Progress'],
+  ['icons', 'Icons'],
+  ['stacks', 'Stacks'],
+  ['rtl', 'RTL'],
+] as const;
+export function Playground() {
+  const [category, setCategory] =
+    useState<(typeof categories)[number][0]>('messages');
+  function select(next: typeof category) {
+    notia.dismissAll();
+    setCategory(next);
+  }
+  return (
+    <section className="playground-page section-width">
+      <div className="section-heading">
+        <div>
+          <p className="kicker">TRY IT. MAKE IT YOURS.</p>
+          <h1 className="page-title">A small message. A useful next step.</h1>
+          <p>
+            Choose an example, try its controls, then copy the working code.
+          </p>
+        </div>
+      </div>
+      <div
+        className="playground-category"
+        role="group"
+        aria-label="Playground examples"
+      >
+        {categories.map(([key, title], index) => (
+          <button
+            key={key}
+            aria-pressed={category === key}
+            onClick={() => select(key)}
+            onKeyDown={(event) => {
+              if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft')
+                return;
+              event.preventDefault();
+              const next =
+                categories[
+                  (index +
+                    (event.key === 'ArrowRight' ? 1 : categories.length - 1)) %
+                    categories.length
+                ]!;
+              select(next[0]);
+              (
+                event.currentTarget.parentElement?.children[
+                  (index +
+                    (event.key === 'ArrowRight' ? 1 : categories.length - 1)) %
+                    categories.length
+                ] as HTMLButtonElement
+              )?.focus();
+            }}
+          >
+            {title}
+          </button>
+        ))}
+      </div>
+      {category === 'messages' ? (
+        <MessagePlayground />
+      ) : (
+        <LiveExample
+          key={category}
+          name={category as ExampleName}
+          title={categories.find(([key]) => key === category)![1]}
+        />
+      )}
     </section>
   );
 }

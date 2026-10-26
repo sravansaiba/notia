@@ -4,6 +4,8 @@
 
 Expressive, accessible toast notifications for React and Next.js. Available on npm as [`notia`](https://www.npmjs.com/package/notia).
 
+Source for the **0.2.0** release, including interactive notifications and the documentation website.
+
 ![Notia playground demo](media/notia-demo.gif)
 
 ## Why Notia?
@@ -15,6 +17,16 @@ Expressive, accessible toast notifications for React and Next.js. Available on n
 - Bounded queues and stable IDs for updates and duplicate prevention.
 - TypeScript declarations, ESM/CJS builds, and no additional runtime dependencies.
 - Supports React 18.3 and React 19, including Next.js App and Pages Routers.
+
+## Interactive notifications
+
+- Action and cancel buttons with async pending states, duplicate-click protection, and recoverable errors.
+- Persistent progress notifications with accessible percentage values.
+- Per-type and per-toast custom icons, including an icon-free option.
+- Optional expandable stacks with keyboard/touch controls and paused hidden timers.
+- RTL layout and translatable notification controls.
+
+Try these additions in the local playground. Existing notification methods and default layouts remain compatible. See the [package API](packages/echo/README.md#new-in-020) for examples. Nothing is published by building or testing the project.
 
 ## Install
 

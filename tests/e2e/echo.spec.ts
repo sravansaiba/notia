@@ -250,12 +250,13 @@ test('provides keyboard-navigable examples and usable documentation links', asyn
     .click();
   await expect(page).toHaveURL(/\/docs$/);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'Up and toasting.',
+    'A little guidance. Then you’re building.',
   );
 });
 
 test('keeps home, playground, and documentation on separate routes', async ({
   page,
+  isMobile,
 }) => {
   await page.goto('/');
   await expect(page.getByLabel('Your message')).toHaveCount(0);
@@ -271,23 +272,27 @@ test('keeps home, playground, and documentation on separate routes', async ({
       .getByRole('link', { name: 'Playground', exact: true }),
   ).toHaveAttribute('aria-current', 'page');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'Good feedback is a feeling.',
+    'A small message. A useful next step.',
   );
   await page
     .getByRole('navigation', { name: 'Main navigation' })
     .getByRole('link', { name: 'Docs', exact: true })
     .click();
   await expect(page.getByLabel('Your message')).toHaveCount(0);
+  if (isMobile)
+    await page.getByRole('button', { name: 'Browse documentation' }).click();
   await page
     .getByRole('navigation', { name: 'Documentation sections' })
-    .getByRole('link', { name: 'API reference' })
+    .getByRole('link', { name: 'All settings', exact: true })
     .click();
   await expect(page).toHaveURL(/\/docs\/api$/);
   await page.reload();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    'A small API. Plenty to say.',
+    'All settings',
   );
-  await expect(page.getByRole('table')).toContainText('notia.success');
+  await expect(
+    page.getByRole('table', { name: 'Notia API methods' }),
+  ).toContainText('notia.success');
 });
 
 test('checks accessibility and layout on every documentation route', async ({

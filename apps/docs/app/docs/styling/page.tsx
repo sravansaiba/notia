@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { Code } from '../../components/code';
-export const metadata: Metadata = { title: 'Styling and themes' };
+export const metadata: Metadata = { title: 'Colors & dark mode' };
 export default function DocPage() {
   return (
     <>
-      <h1 className="doc-title">Your product. Your personality.</h1>
+      <h1 className="doc-title">Colors & dark mode</h1>
       <p>
         Import the stylesheet once, choose a theme, and add your own classes
         where you need them. No styling framework required.
@@ -17,6 +17,12 @@ export default function DocPage() {
         Choose <code>light</code>, <code>dark</code>, or <code>system</code>.
         System follows the user's color preference. All themes respect
         reduced-motion settings automatically.
+      </p>
+      <p>
+        Guide previews follow the website appearance switch. In your
+        application, system follows the operating system; use light or dark to
+        match an app-specific theme. The playground lets you choose the
+        notification theme independently.
       </p>
       <h2>Make a toast your own</h2>
       <Code
@@ -36,6 +42,44 @@ export default function DocPage() {
         label="Toaster styles"
         text={`<Toaster\n  theme="system"\n  className="product-notifications"\n  style={{ fontFamily: 'inherit', zIndex: 10000 }}\n/>`}
       />
+      <h2>Custom icons</h2>
+      <Code
+        label="Default and per-toast icons"
+        text={`<Toaster icons={{ success: <span>✦</span>, loading: <span>◌</span> }} />
+
+notia.success('Saved', { icon: <span>✓</span> });
+notia.info('No icon needed', { icon: null });`}
+      />
+      <p>
+        The per-toast icon takes priority over the type default. Use{' '}
+        <code>null</code> or <code>false</code> to hide it. Icons are decorative
+        and hidden from screen readers; keep controls outside the icon slot and
+        use the message or announcement for meaning.
+      </p>
+      <h2>Direction and localized controls</h2>
+      <Code
+        label="Japanese controls with optional RTL layout"
+        text={`<Toaster dir="rtl" lang="ja" labels={{
+  dismiss: '通知を閉じる',
+  expand: '通知を展開',
+  collapse: '通知を折りたたむ',
+  progress: '進行状況',
+  actionError: '操作に失敗しました。もう一度お試しください。',
+}} />`}
+      />
+      <p>
+        Japanese normally uses left-to-right text. The RTL setting here
+        demonstrates mirroring separately from translation.
+      </p>
+      <p>
+        Without an explicit <code>dir</code>, the notification region inherits
+        the document direction. Its portal attaches to the document body, so
+        pass <code>dir</code> for an RTL section inside an LTR document. Text,
+        action order, progress origin, and exit motion follow direction.
+        Position names remain physical: <code>top-left</code> stays on the left
+        in either direction. Set <code>label</code> to translate the region name
+        and <code>progressLabel</code> for task-specific progress names.
+      </p>
     </>
   );
 }

@@ -201,6 +201,7 @@ import { renderToString } from 'react-dom/server';
 import { Toaster, notia as echo } from 'notia';
 assert.equal(renderToString(React.createElement(Toaster)), '');
 assert.equal(echo.success('No server state'), '');
+assert.equal(echo.progress('No server progress', { progress: 50 }), '');
 assert.equal(await echo.promise(Promise.resolve(7), { loading: 'Wait', success: 'Done', error: 'No' }), 7);
 `,
     );
@@ -212,6 +213,7 @@ const {renderToString} = require('react-dom/server');
 const {Toaster, notia: echo} = require('notia');
 assert.equal(renderToString(React.createElement(Toaster)), '');
 assert.equal(echo.success('No server state'), '');
+assert.equal(echo.progress('No server progress', { progress: 50 }), '');
 `,
     );
     execFileSync(process.execPath, ['server.mjs'], { cwd, stdio: 'inherit' });
@@ -219,7 +221,9 @@ assert.equal(echo.success('No server state'), '');
     await writeFile(
       new URL('types.mts', directory),
       `import { notia as echo, type ToastOptions } from 'notia';
-const options: ToastOptions = { duration: Infinity, id: 'typed' };
+const options: ToastOptions = { duration: Infinity, id: 'typed', progress: 25, icon: null, action: { label: 'Retry', onClick: async (id) => { echo.dismiss(id); } } };
+const progressId: string = echo.progress('Upload', { progress: 0 });
+echo.update(progressId, { progress: 100, type: 'success', action: null, progressLabel: 'Upload' });
 const id: string = echo.success('Typed', options);
 const promise: Promise<number> = echo.promise(Promise.resolve(1), { loading: 'Wait', success: (value) => String(value), error: (error: unknown) => String(error) });
 echo.dismiss(id);

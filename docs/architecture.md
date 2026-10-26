@@ -27,3 +27,15 @@ React and ReactDOM remain peers. There are no additional runtime dependencies, a
 ## Documentation as a real consumer
 
 The documentation app imports the built library rather than aliases to source files. A second check installs the tarball into isolated consumers. The docs use plain CSS so the project does not need an extra styling tool merely to render its own examples.
+
+## Interactive notifications
+
+Actions run against a notification instance, so a late promise cannot mutate another notification that reused the same ID. Pending actions pause their clock and preserve keyboard focus through aria-disabled controls. Failures update the current notification and allow retry.
+
+Progress reuses the loading lifecycle and the existing update API. A clamped visual value is exposed through a labeled progressbar; percentage changes do not modify the live message. Completion remains the application's decision.
+
+Expandable stacks keep the store's ordering and limits. Hidden cards remain mounted with the hidden attribute and paused clocks; their controls cannot receive focus. Expanding through hover, focus, or a toggle pauses the group. Direction and translated labels belong to the Toaster; positions keep their physical meaning.
+
+## Documentation examples
+
+Feature guides use the same components as their contained live previews. The snippet generator derives JavaScript from those TypeScript components, and verification rejects stale generated code. Both languages are checked against the public API. Embedded examples configure one website Toaster through a small host adapter. Generated snippets replace that adapter import with the public Toaster. Cleanup restores default settings and dismisses example notifications. Website appearance is separate from playground notification settings.

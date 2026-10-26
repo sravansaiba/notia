@@ -69,6 +69,12 @@ Browser tests launch a fresh production server on port 3100 and refuse to reuse 
 
 If rebuilding while a preview server is running, stop and restart the preview afterward to avoid stale Next.js manifests.
 
+## Live documentation examples
+
+The components in `apps/docs/examples` are both the live previews and the source of the copied examples. After editing one, run `pnpm docs:examples` to regenerate `apps/docs/app/lib/example-sources.ts`. Commit both the component and its generated source data. `pnpm check:docs` rejects stale snippets and checks the generated JavaScript against the real library API; the website type check validates the TypeScript components.
+
+Embedded examples configure the website’s single Toaster. Their standalone code imports the public Toaster directly. Reset and navigation dismiss active notifications. Website appearance and code-language preferences are saved locally; playground configuration is scoped to its page.
+
 ## Reports and accessibility
 
 Generated files belong in ignored report directories:

@@ -1,26 +1,67 @@
 import type { Metadata } from 'next';
-import { Code } from '../components/code';
-export const metadata: Metadata = { title: 'Getting started' };
+import Link from 'next/link';
+import { LiveExample } from '../components/live-example';
+export const metadata: Metadata = { title: 'Welcome to Notia' };
 export default function DocPage() {
   return (
     <>
-      <p className="kicker">HELLO, NOTIA.</p>
-      <h1 className="doc-title">Up and toasting.</h1>
-      <p>Add a Toaster once. Call Notia wherever your client code lives.</p>
-      <Code text="npm install notia" label="1. Install" />
-      <Code
-        label="2. Mount once · app/layout.tsx"
-        text={`import type { ReactNode } from 'react';\nimport { Toaster } from 'notia';\nimport 'notia/styles.css';\n\nexport default function Layout({ children }: { children: ReactNode }) {\n  return (\n    <html lang="en">\n      <body>\n        {children}\n        <Toaster position="bottom-right" theme="system" />\n      </body>\n    </html>\n  );\n}`}
-      />
-      <Code
-        label="3. Call from client code"
-        text={`'use client';\nimport { notia } from 'notia';\n\nexport function SaveButton() {\n  return (\n    <button onClick={() => notia.success('Saved')}>\n      Save changes\n    </button>\n  );\n}`}
-      />
-      <p className="docs-tip">
-        Using Vite? Put <code>&lt;Toaster /&gt;</code> near your app root and
-        import the stylesheet once. For Next.js Pages Router, use{' '}
-        <code>pages/_app.tsx</code>. Toast calls work in browser utilities too;
-        server-side calls are inert.
+      <p className="kicker">SMALL NOTIFICATIONS. CLEAR FEEDBACK.</p>
+      <h1 className="doc-title">A little guidance. Then you’re building.</h1>
+      <p className="doc-lead">
+        Notia adds small, interactive notification messages to React and Next.js
+        apps. Confirm a save, explain a problem, undo a change, or show the
+        progress of a task.
+      </p>
+      <div className="guide-cards">
+        {[
+          [
+            '/docs/setup',
+            '01',
+            'Install & set up',
+            'Choose your framework and show your first message.',
+          ],
+          [
+            '/docs/actions',
+            '02',
+            'Add an Undo button',
+            'Make a change and let people reverse it.',
+          ],
+          [
+            '/docs/progress',
+            '03',
+            'Show upload progress',
+            'Keep a task’s percentage in one notification.',
+          ],
+          [
+            '/playground',
+            '↗',
+            'Try the playground',
+            'Explore the options before copying your code.',
+          ],
+        ].map(([href, number, title, description]) => (
+          <Link key={href} href={href!}>
+            <small>{number}</small>
+            <strong>{title}</strong>
+            <span>{description}</span>
+          </Link>
+        ))}
+      </div>
+      <h2>See what a toast does</h2>
+      <p>
+        Read the code, then click Show success below it. The notification
+        appears on this website. Reset clears the example and its notifications.
+      </p>
+      <LiveExample name="success" title="Your first notification" />
+      <h2>Pick the right feedback</h2>
+      <p>
+        Use success after work finishes, error when something fails, information
+        for an update, and warning when something needs attention. Use loading
+        or progress while work is happening.
+      </p>
+      <p>
+        You don’t need advanced React knowledge to follow these guides, but you
+        do need a React application. Every feature includes working JavaScript
+        and TypeScript, a live example, and an explanation of what to expect.
       </p>
     </>
   );

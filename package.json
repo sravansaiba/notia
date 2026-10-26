@@ -21,9 +21,11 @@
     "test:compat": "node scripts/check-compat.mjs",
     "audit:deps": "pnpm audit --audit-level=high",
     "check:release-tools": "node scripts/check-release-tools.mjs",
-    "verify": "pnpm audit:deps && pnpm build && pnpm test:coverage && pnpm typecheck && pnpm lint && pnpm format:check && pnpm check:release-tools && pnpm check:package && pnpm test:compat && pnpm test:e2e",
+    "verify": "pnpm audit:deps && pnpm build && pnpm test:coverage && pnpm check:docs && pnpm typecheck && pnpm lint && pnpm format:check && pnpm check:release-tools && pnpm check:package && pnpm test:compat && pnpm test:e2e",
     "changeset": "changeset",
-    "version-packages": "changeset version"
+    "version-packages": "changeset version",
+    "docs:examples": "node scripts/docs-examples.mjs",
+    "check:docs": "node scripts/check-docs.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.0",

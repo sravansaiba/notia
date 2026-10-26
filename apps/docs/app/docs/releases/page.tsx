@@ -5,7 +5,20 @@ export default function DocPage() {
   return (
     <>
       <p className="kicker">RELEASE NOTES</p>
-      <h1 className="doc-title">Notia 0.1.1</h1>
+      <h1 className="doc-title">Notia 0.2.0</h1>
+      <p>
+        Interactive notifications for React and Next.js. Explore the guides for
+        complete, working examples.
+      </p>
+      <h2>Feedback you can act on.</h2>
+      <p>
+        Action and cancel buttons with async error recovery, progress
+        notifications, custom icons, optional expandable stacks, and RTL support
+        with translatable controls. Existing methods keep working and no runtime
+        dependencies are added.
+      </p>
+      <Code label="Install Notia" text="npm install notia@0.2.0" />
+      <h2>Notia 0.1.1 · published</h2>
       <p>
         Published on 23 October 2026. Expressive toast notifications for React
         and Next.js, with no extra runtime dependencies.

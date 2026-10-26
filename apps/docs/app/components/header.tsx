@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Brand } from './brand';
+import { ThemeSwitch } from './theme-switch';
 
 export function Header() {
   const pathname = usePathname() ?? '/';
@@ -26,7 +27,7 @@ export function Header() {
             Playground
           </Link>
           <Link className="nav-release" href="/docs/releases">
-            v0.1.1 <span className="status-dot" />
+            v0.2.0 <span className="status-dot" />
           </Link>
           <a
             className="github-link"
@@ -46,6 +47,7 @@ export function Header() {
             </svg>
           </a>
         </nav>
+        <ThemeSwitch />
         <Link className="header-cta" href="/docs">
           Get started <span aria-hidden="true">↗</span>
         </Link>

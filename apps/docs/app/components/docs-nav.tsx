@@ -1,40 +1,66 @@
 'use client';
-
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Brand } from './brand';
-
-const links = [
-  ['/docs', 'Getting started'],
-  ['/docs/api', 'API reference'],
-  ['/docs/styling', 'Styling & themes'],
-  ['/docs/accessibility', 'Accessibility'],
-  ['/docs/releases', 'Release notes'],
-] as const;
+import { useState } from 'react';
+import { guideGroups } from '../lib/guides';
 export function DocsNav() {
   const pathname = usePathname();
+  const [query, setQuery] = useState('');
+  const [open, setOpen] = useState(false);
+  const groups = guideGroups.map((group) => ({
+    ...group,
+    items: group.items.filter(([, title]) =>
+      title.toLowerCase().includes(query.trim().toLowerCase()),
+    ),
+  }));
   return (
     <aside className="docs-nav">
-      <p className="kicker">THE DOCUMENTATION</p>
-      <nav aria-label="Documentation sections">
-        {links.map(([href, label]) => (
-          <Link
-            key={href}
-            href={href}
-            aria-current={pathname === href ? 'page' : undefined}
-          >
-            {label}
-            {pathname === href && <span aria-hidden="true">↗</span>}
-          </Link>
-        ))}
-      </nav>
-      <div className="sidebar-note">
-        <Brand small />
-        <p>
-          Good things come
-          <br />
-          in small packages.
-        </p>
+      <button
+        className="docs-menu-button"
+        aria-expanded={open}
+        aria-controls="docs-menu"
+        onClick={() => setOpen(!open)}
+      >
+        Browse documentation <span aria-hidden="true">{open ? '−' : '+'}</span>
+      </button>
+      <div id="docs-menu" className={open ? 'docs-menu open' : 'docs-menu'}>
+        <label className="docs-search">
+          <span>Find a guide</span>
+          <input
+            type="search"
+            placeholder="Search topics…"
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+          />
+        </label>
+        <nav aria-label="Documentation sections">
+          {groups.map(
+            (group) =>
+              group.items.length > 0 && (
+                <div className="nav-group" key={group.title}>
+                  <p>{group.title}</p>
+                  {group.items.map(([href, label]) => (
+                    <Link
+                      key={href}
+                      href={href}
+                      aria-current={pathname === href ? 'page' : undefined}
+                      onClick={() => {
+                        setOpen(false);
+                        setQuery('');
+                      }}
+                    >
+                      {label}
+                    </Link>
+                  ))}
+                </div>
+              ),
+          )}
+          {groups.every((group) => !group.items.length) && (
+            <p className="search-empty">
+              No guide found. Try “progress”, “buttons”, or “setup”.
+            </p>
+          )}
+        </nav>
       </div>
     </aside>
   );
